@@ -55,7 +55,7 @@ The AI agent uses IBM Granite models for reasoning. You must add your API key to
 
 Open Agentic_AI_Integration.py and replace "YOUR_GRANITE_API_KEY" with your actual API key:
 
-# Agentic_AI_Integration.py (find this line and edit)
+### Agentic_AI_Integration.py (find this line and edit)
 def __init__(self, granite_api_key):
     self.granite_api_key = granite_api_key
 

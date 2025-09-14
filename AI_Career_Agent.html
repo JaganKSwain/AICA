@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Career Agent</title>
+    <!-- Use a simple CDN for the Inter font and Tailwind CSS -->
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Phosphor Icons for a professional look -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            color: #1f2937;
+        }
+
+        .chat-bubble {
+            max-width: 80%;
+            padding: 10px 15px;
+            border-radius: 20px;
+            margin-bottom: 10px;
+            word-wrap: break-word;
+        }
+
+        .user-bubble {
+            background-color: #3b82f6;
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+        }
+
+        .assistant-bubble {
+            background-color: #e5e7eb;
+            color: #1f2937;
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+        }
+
+        /* Custom scrollbar */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #d1d5db;
+            border-radius: 10px;
+            border: 2px solid transparent;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+
+    <!-- Main Container -->
+    <div class="bg-white rounded-3xl shadow-2xl p-6 w-full max-w-7xl mx-auto flex flex-col lg:flex-row gap-6">
+
+        <!-- Left Column: Dashboard and Agent Tools -->
+        <div class="flex-1 flex flex-col space-y-6">
+
+            <!-- Header -->
+            <header class="text-center mb-6">
+                <div class="flex items-center justify-center mb-2">
+                    <i class="ph-sparkle text-3xl text-indigo-600"></i>
+                    <h1 class="text-3xl font-bold text-gray-800 ml-2">AI Career Agent</h1>
+                </div>
+                <p class="text-gray-500 mt-1">Your personal guide to career success.</p>
+            </header>
+
+            <!-- Agent Tools Container -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                <!-- Find Jobs Tool -->
+                <div id="findJobsSection" class="bg-gray-50 rounded-2xl p-5 shadow-inner">
+                    <h2 class="font-semibold text-xl mb-3 flex items-center">
+                        <i class="ph-magnifying-glass-duotone text-indigo-500 mr-2 text-2xl"></i> Find Jobs
+                    </h2>
+                    <p class="text-sm text-gray-500 mb-4">Search for jobs based on your skills and keywords.</p>
+                    <div class="flex items-center space-x-2">
+                        <input type="text" id="jobSearchInput" placeholder="e.g., Python Developer" class="flex-1 p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <button id="findJobsBtn" class="bg-indigo-600 text-white p-3 rounded-xl hover:bg-indigo-700 transition duration-300 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <i class="ph-arrow-right-duotone text-xl"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Analyze Skills Tool -->
+                <div id="analyzeSkillsSection" class="bg-gray-50 rounded-2xl p-5 shadow-inner">
+                    <h2 class="font-semibold text-xl mb-3 flex items-center">
+                        <i class="ph-file-text-duotone text-emerald-500 mr-2 text-2xl"></i> Analyze Skills
+                    </h2>
+                    <p class="text-sm text-gray-500 mb-4">Upload your resume to analyze your skills for a career path.</p>
+                    <div class="flex items-center space-x-2">
+                        <label for="fileUpload" class="flex-1 p-3 rounded-xl border border-gray-300 bg-white text-gray-500 cursor-pointer hover:bg-gray-100 transition duration-300 text-center">
+                            <i class="ph-upload-duotone mr-2"></i>Choose a File
+                        </label>
+                        <input type="file" id="fileUpload" class="hidden" accept=".pdf,.doc,.docx,.txt">
+                        <button id="analyzeSkillsBtn" class="bg-emerald-600 text-white p-3 rounded-xl hover:bg-emerald-700 transition duration-300 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                            <i class="ph-arrow-right-duotone text-xl"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Knowledge Box -->
+                <div id="knowledgeBox" class="bg-gray-50 rounded-2xl p-5 shadow-inner md:col-span-2 lg:col-span-1">
+                    <h2 class="font-semibold text-xl mb-3 flex items-center">
+                        <i class="ph-graduation-cap-duotone text-purple-500 mr-2 text-2xl"></i> Knowledge Hub
+                    </h2>
+                    <p class="text-sm text-gray-500 mb-4">Find resources to learn new skills and fill your career gaps.</p>
+                    <div class="flex items-center space-x-2">
+                        <input type="text" id="knowledgeInput" placeholder="e.g., Machine Learning" class="flex-1 p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <button id="knowledgeBtn" class="bg-purple-600 text-white p-3 rounded-xl hover:bg-purple-700 transition duration-300 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                            <i class="ph-arrow-right-duotone text-xl"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Agent Output Area -->
+            <div id="outputArea" class="bg-white rounded-2xl p-6 shadow-md flex-1">
+                <h2 class="font-semibold text-xl mb-3 flex items-center">
+                    <i class="ph-robot-duotone text-gray-700 mr-2 text-2xl"></i> Agent Output
+                </h2>
+                <div id="outputContent" class="text-gray-700 space-y-4">
+                    <p class="text-gray-400 text-center">Your results will appear here after running a tool.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: Chat Assistant -->
+        <div class="bg-gray-50 rounded-3xl p-6 shadow-inner w-full lg:w-96 flex flex-col">
+            <h2 class="font-semibold text-xl mb-4 flex items-center justify-center">
+                <i class="ph-chat-circle-dots-duotone text-indigo-500 mr-2 text-2xl"></i> Chat Assistant
+            </h2>
+            
+            <!-- Chat Window -->
+            <div id="chatWindow" class="flex-1 flex flex-col space-y-3 p-4 bg-white rounded-2xl shadow-inner custom-scrollbar overflow-y-auto mb-4">
+                <div class="chat-bubble assistant-bubble">Hello! I'm your AI Career Agent. How can I help you today?</div>
+            </div>
+
+            <!-- Chat Input -->
+            <div class="flex items-center space-x-2">
+                <input type="text" id="chatInput" placeholder="Ask for help..." class="flex-1 p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <button id="chatSendBtn" class="bg-indigo-600 text-white p-3 rounded-xl hover:bg-indigo-700 transition duration-300 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <i class="ph-paper-plane-right-duotone text-xl"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript for interactivity -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const findJobsBtn = document.getElementById('findJobsBtn');
+            const jobSearchInput = document.getElementById('jobSearchInput');
+            const fileUploadInput = document.getElementById('fileUpload');
+            const analyzeSkillsBtn = document.getElementById('analyzeSkillsBtn');
+            const knowledgeBtn = document.getElementById('knowledgeBtn');
+            const knowledgeInput = document.getElementById('knowledgeInput');
+            const outputContent = document.getElementById('outputContent');
+            const chatWindow = document.getElementById('chatWindow');
+            const chatInput = document.getElementById('chatInput');
+            const chatSendBtn = document.getElementById('chatSendBtn');
+
+            // Simulate the backend API endpoint
+            const API_ENDPOINT = 'http://localhost:5000/api'; // Replace with your actual backend URL
+
+            // Chat Assistant Functions
+            function addMessage(text, isUser) {
+                const bubble = document.createElement('div');
+                bubble.className = `chat-bubble ${isUser ? 'user-bubble' : 'assistant-bubble'}`;
+                bubble.textContent = text;
+                chatWindow.appendChild(bubble);
+                chatWindow.scrollTop = chatWindow.scrollHeight; // Auto-scroll to the latest message
+            }
+
+            async function handleChat(message) {
+                addMessage(message, true);
+                chatInput.value = ''; // Clear input
+
+                // Simulate a response from the chat assistant
+                let response = '';
+                if (message.toLowerCase().includes('help')) {
+                    response = "I can help you with your career goals. You can use the tools on the left to find jobs, analyze your skills, or get a learning plan. Just type your query and I will assist you.";
+                } else if (message.toLowerCase().includes('jobs')) {
+                    response = "To find jobs, use the search bar in the 'Find Jobs' section. Type in a skill like 'Python Developer' and click the arrow button.";
+                } else if (message.toLowerCase().includes('analyze skills')) {
+                    response = "To analyze your skills, you need to upload your resume. Click the 'Choose a File' button in the 'Analyze Skills' section, select your resume file, and click the arrow button.";
+                } else if (message.toLowerCase().includes('learning')) {
+                    response = "For learning recommendations, enter the skill you want to learn in the 'Knowledge Hub' search bar and click the arrow button.";
+                } else {
+                    response = "I'm not sure how to help with that. Try asking about 'jobs', 'analyze skills', or 'learning'.";
+                }
+
+                setTimeout(() => {
+                    addMessage(response, false);
+                }, 500);
+            }
+
+            // Event listeners for chat
+            chatSendBtn.addEventListener('click', () => {
+                const message = chatInput.value.trim();
+                if (message) {
+                    handleChat(message);
+                }
+            });
+
+            chatInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    chatSendBtn.click();
+                }
+            });
+
+            // Agent Tool Functions
+            function showLoading(message) {
+                outputContent.innerHTML = `<div class="text-center text-gray-500 animate-pulse">
+                    <i class="ph-spinner-gap-duotone text-4xl mb-2"></i>
+                    <p>${message}</p>
+                </div>`;
+            }
+
+            function displayOutput(data) {
+                if (data.status === "Success") {
+                    let html = `<div class="font-bold text-lg text-gray-800">Agent Report</div>`;
+                    data.matches.forEach(match => {
+                        html += `
+                        <div class="bg-gray-50 rounded-xl p-4 shadow-sm border border-gray-200">
+                            <h3 class="font-bold text-indigo-600 text-lg">${match.title} at ${match.company}</h3>
+                            <p class="text-sm text-gray-500">Match Score: <span class="font-semibold text-gray-700">${match.match_score}%</span></p>
+                            ${match.skill_gaps ? `
+                            <p class="mt-2 text-sm">
+                                <span class="font-medium text-red-500">Skill Gaps:</span> ${match.skill_gaps.join(', ')}
+                            </p>
+                            ` : ''}
+                            ${match.learning_plan ? `
+                            <p class="mt-2 text-sm font-medium text-gray-600">Learning Plan:</p>
+                            <ul class="list-disc list-inside text-sm text-gray-500 mt-1">
+                                ${match.learning_plan.map(plan => `<li>${plan}</li>`).join('')}
+                            </ul>
+                            ` : ''}
+                        </div>
+                        `;
+                    });
+                    outputContent.innerHTML = html;
+                } else {
+                    outputContent.innerHTML = `<p class="text-center text-red-500 font-semibold">${data.report}</p>`;
+                }
+            }
+
+            // Event listeners for tools
+            findJobsBtn.addEventListener('click', async () => {
+                const skills = jobSearchInput.value.split(',').map(s => s.trim());
+                if (skills.length === 0 || skills[0] === "") {
+                    alert('Please enter at least one skill to search for jobs.');
+                    return;
+                }
+                showLoading('Searching for jobs...');
+                
+                // Simulate API call to the backend
+                try {
+                    const response = await fetch(`${API_ENDPOINT}/find_jobs`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ skills })
+                    });
+                    const data = await response.json();
+                    displayOutput(data);
+                } catch (error) {
+                    outputContent.innerHTML = `<p class="text-center text-red-500 font-semibold">Error: Could not connect to the backend.</p>`;
+                    console.error('API Error:', error);
+                }
+            });
+
+            analyzeSkillsBtn.addEventListener('click', async () => {
+                const file = fileUploadInput.files[0];
+                if (!file) {
+                    alert('Please upload a resume file.');
+                    return;
+                }
+                showLoading('Analyzing your skills...');
+
+                const formData = new FormData();
+                formData.append('resume', file);
+
+                // Simulate API call
+                try {
+                    const response = await fetch(`${API_ENDPOINT}/analyze_skills`, {
+                        method: 'POST',
+                        body: formData
+                    });
+                    const data = await response.json();
+                    displayOutput(data);
+                } catch (error) {
+                    outputContent.innerHTML = `<p class="text-center text-red-500 font-semibold">Error: Could not connect to the backend.</p>`;
+                    console.error('API Error:', error);
+                }
+            });
+
+            knowledgeBtn.addEventListener('click', async () => {
+                const skill = knowledgeInput.value.trim();
+                if (!skill) {
+                    alert('Please enter a skill to get learning recommendations.');
+                    return;
+                }
+                showLoading(`Finding resources for ${skill}...`);
+
+                // Simulate API call
+                try {
+                    const response = await fetch(`${API_ENDPOINT}/learning_resources`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ skill })
+                    });
+                    const data = await response.json();
+                    
+                    if (data.status === "Success") {
+                        let html = `
+                            <h3 class="font-bold text-lg text-gray-800 mb-2">Learning Resources for "${skill}"</h3>
+                            <ul class="list-disc list-inside text-gray-700 space-y-2">
+                                ${data.resources.map(res => `<li><a href="${res.url}" class="text-indigo-600 hover:underline" target="_blank">${res.title}</a></li>`).join('')}
+                            </ul>
+                        `;
+                        outputContent.innerHTML = html;
+                    } else {
+                        outputContent.innerHTML = `<p class="text-center text-red-500 font-semibold">${data.report}</p>`;
+                    }
+
+                } catch (error) {
+                    outputContent.innerHTML = `<p class="text-center text-red-500 font-semibold">Error: Could not connect to the backend.</p>`;
+                    console.error('API Error:', error);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

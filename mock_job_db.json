@@ -1,0 +1,32 @@
+[
+  {
+    "title": "Data Scientist",
+    "company": "Tech Innovators",
+    "description": "Seeking a Data Scientist with strong skills in Python, SQL, Machine Learning, and data analysis. Experience with large datasets and a background in statistics is a plus."
+  },
+  {
+    "title": "Software Engineer",
+    "company": "Code Inc.",
+    "description": "We are looking for a Software Engineer proficient in Python, JavaScript, and cloud technologies. Experience with algorithms and data structures is essential."
+  },
+  {
+    "title": "Machine Learning Engineer",
+    "company": "AI Solutions",
+    "description": "A Machine Learning Engineer with expertise in AI, deep learning, and Python is needed to develop and deploy cutting-edge models. Strong problem-solving skills are required."
+  },
+  {
+    "title": "Product Manager",
+    "company": "Global Connect",
+    "description": "Hiring a Product Manager with excellent communication and analytical skills. Experience in agile development and a solid understanding of the market is a must."
+  },
+  {
+    "title": "Cybersecurity Analyst",
+    "company": "Secure Systems",
+    "description": "Looking for a Cybersecurity Analyst with a strong background in network security, threat analysis, and ethical hacking. Knowledge of security protocols is a plus."
+  },
+  {
+    "title": "Frontend Developer",
+    "company": "Design Hub",
+    "description": "A Frontend Developer skilled in JavaScript, HTML, and CSS to build engaging user interfaces. Experience with modern frameworks is a plus."
+  }
+]

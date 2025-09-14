@@ -1,4 +1,5 @@
 AI Career Agent: The Proactive Path to Your Next Career
+
 Project Overview
 This is an AI Career Agent, an autonomous system designed to help individuals find jobs and navigate their career paths by bridging the gap between their skills and industry demands. Leveraging IBM's open-source technologies, this project demonstrates an end-to-end, agentic workflow that goes beyond traditional keyword matching.
 
